@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import fetchRaces from "./raceThunk";
+import fetchRaceThunk from "./raceThunk";
 
 const raceSlice = createSlice({
-  name: "driverReducer",
+  name: "raceReducer",
   initialState: {
     isError: false,
     isLoading: false,
@@ -11,19 +11,19 @@ const raceSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchRaces.pending, (state) => {
+    builder.addCase(fetchRaceThunk.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
       state.err = null;
     });
 
-    builder.addCase(fetchRaces.fulfilled, (state, action) => {
+    builder.addCase(fetchRaceThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
       state.data = action.payload;
     });
 
-    builder.addCase(fetchRaces.rejected, (state, action) => {
+    builder.addCase(fetchRaceThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.err = action.error.message || "Something went wrong";

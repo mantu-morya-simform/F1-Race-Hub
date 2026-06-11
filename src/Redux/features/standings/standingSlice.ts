@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import fetchStandings from "./standingThunk";
+import fetchStandingsThunk from "./standingThunk";
 
 const standingSlice = createSlice({
-  name: "driverReducer",
+  name: "standingReducer",
   initialState: {
     isError: false,
     isLoading: false,
@@ -11,19 +11,19 @@ const standingSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchStandings.pending, (state) => {
+    builder.addCase(fetchStandingsThunk.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
       state.err = null;
     });
 
-    builder.addCase(fetchStandings.fulfilled, (state, action) => {
+    builder.addCase(fetchStandingsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
       state.data = action.payload;
     });
 
-    builder.addCase(fetchStandings.rejected, (state, action) => {
+    builder.addCase(fetchStandingsThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.err = action.error.message || "Something went wrong";

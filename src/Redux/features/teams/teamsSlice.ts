@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import fetchTeams from "./teamsThunk";
+import fetchTeamsThunk from "./teamsThunk";
 
 const teamsSlice = createSlice({
-  name: "driverReducer",
+  name: "teamReducer",
   initialState: {
     isError: false,
     isLoading: false,
@@ -11,19 +11,19 @@ const teamsSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchTeams.pending, (state) => {
+    builder.addCase(fetchTeamsThunk.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
       state.err = null;
     });
 
-    builder.addCase(fetchTeams.fulfilled, (state, action) => {
+    builder.addCase(fetchTeamsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
       state.data = action.payload;
     });
 
-    builder.addCase(fetchTeams.rejected, (state, action) => {
+    builder.addCase(fetchTeamsThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.err = action.error.message || "Something went wrong";

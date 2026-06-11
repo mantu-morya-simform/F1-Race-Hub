@@ -1,14 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const fetchStandings = createAsyncThunk("fetchStandings", async () => {
-  const response = await fetch(
-    "https://f1api.dev/api/2021/drivers-championship",
-  );
-  if (!response.ok) {
-    throw new Error("Failed to fetch drivers");
-  }
+const fetchStandingsThunk = createAsyncThunk(
+  "fetchStandingsThunk",
+  async () => {
+    const response = await fetch(
+      "https://f1api.dev/api/2021/drivers-championship",
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch drivers");
+    }
 
-  return response.json();
-});
+    return response.json();
+  },
+);
 
-export default fetchStandings;
+export default fetchStandingsThunk;

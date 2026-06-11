@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import fetchDrivers from "./driverThunk";
+import fetchDriversThunk from "./driverThunk";
 
 const driverSlice = createSlice({
   name: "driverReducer",
@@ -11,19 +11,19 @@ const driverSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchDrivers.pending, (state) => {
+    builder.addCase(fetchDriversThunk.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
       state.err = null;
     });
 
-    builder.addCase(fetchDrivers.fulfilled, (state, action) => {
+    builder.addCase(fetchDriversThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
       state.data = action.payload;
     });
 
-    builder.addCase(fetchDrivers.rejected, (state, action) => {
+    builder.addCase(fetchDriversThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.err = action.error.message || "Something went wrong";

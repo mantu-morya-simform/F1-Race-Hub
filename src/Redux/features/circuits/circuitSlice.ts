@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import fetchCircuits from "./circuitThunk";
+import fetchCircuitsThunk from "./circuitThunk";
 
 const circuitSlice = createSlice({
-  name: "driverReducer",
+  name: "circuitReducer",
   initialState: {
     isError: false,
     isLoading: false,
@@ -11,19 +11,19 @@ const circuitSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchCircuits.pending, (state) => {
+    builder.addCase(fetchCircuitsThunk.pending, (state) => {
       state.isLoading = true;
       state.isError = false;
       state.err = null;
     });
 
-    builder.addCase(fetchCircuits.fulfilled, (state, action) => {
+    builder.addCase(fetchCircuitsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isError = false;
       state.data = action.payload;
     });
 
-    builder.addCase(fetchCircuits.rejected, (state, action) => {
+    builder.addCase(fetchCircuitsThunk.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
       state.err = action.error.message || "Something went wrong";

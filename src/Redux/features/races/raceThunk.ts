@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-const fetchRaces = createAsyncThunk("fetchRaces", async () => {
+const fetchRaceThunk = createAsyncThunk("fetchRaceThunk", async () => {
   const response = await fetch("https://f1api.dev/api/current");
   if (!response.ok) {
     throw new Error("Failed to fetch drivers");
@@ -9,4 +9,4 @@ const fetchRaces = createAsyncThunk("fetchRaces", async () => {
   return response.json();
 });
 
-export default fetchRaces;
+export default fetchRaceThunk;
