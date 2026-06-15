@@ -25,7 +25,7 @@ const RaceSchedule = () => {
   return (
     <div className="bg-gray-900 p-6 rounded-xl shadow-lg mt-10">
       <h1 className="text-5xl font-bold text-red-500 text-center mb-10">
-        All Circuits
+        All Races
       </h1>
 
       {races.isLoading && !races.data && (

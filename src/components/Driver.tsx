@@ -1,7 +1,9 @@
 import type { StandingsDataType } from "@/Redux/features/standings/standingTypes";
 import { FaFlagCheckered, FaMedal, FaTrophy, FaUsers } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Driver = ({ driver }: { driver: StandingsDataType }) => {
+  const navigate = useNavigate();
   return (
     <div
       key={driver.classificationId}
@@ -9,6 +11,7 @@ const Driver = ({ driver }: { driver: StandingsDataType }) => {
                 shadow-md hover:shadow-xl transition-all duration-300
                 border border-gray-700 hover:border-red-500
                 flex flex-col justify-between h-full"
+      onClick={() => navigate(`/standings/${driver.classificationId}`)}
     >
       <div>
         {/* Driver Name */}
