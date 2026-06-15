@@ -17,5 +17,6 @@ const store = configureStore({
 
 export default store;
 
-export type StoreType = ReturnType<typeof store.getState>;
-export type DispatchType = typeof store.dispatch;
+export type AppStore = typeof store;
+export type StoreType = ReturnType<AppStore["getState"]>;
+export type DispatchType = AppStore["dispatch"];

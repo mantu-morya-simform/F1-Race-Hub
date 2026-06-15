@@ -24,7 +24,7 @@ function Dashboard() {
     dispatch(fetchTeamsThunk());
     dispatch(fetchRaceThunk());
     dispatch(fetchCircuitsThunk());
-    dispatch(fetchStandingsThunk());
+    dispatch(fetchStandingsThunk(2026));
   }, [dispatch]);
 
   const drivers: DriverSliceInitialState = useSelector(
