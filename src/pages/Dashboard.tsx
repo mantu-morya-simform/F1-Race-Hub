@@ -8,10 +8,25 @@ import type { TeamSliceInitialState } from "@/Redux/features/teams/teamsTypes";
 import type { RaceSliceInitialState } from "@/Redux/features/races/raceTypes";
 import type { CircuitSliceInitialState } from "@/Redux/features/circuits/circuitTypes";
 import type { StandingsSliceInitialState } from "@/Redux/features/standings/standingTypes";
-import type { StoreType } from "@/Redux/store";
-import { useSelector } from "react-redux";
+import type { DispatchType, StoreType } from "@/Redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import fetchDriversThunk from "@/Redux/features/drivers/driverThunk";
+import fetchTeamsThunk from "@/Redux/features/teams/teamsThunk";
+import fetchRaceThunk from "@/Redux/features/races/raceThunk";
+import fetchCircuitsThunk from "@/Redux/features/circuits/circuitThunk";
+import fetchStandingsThunk from "@/Redux/features/standings/standingThunk";
 
 function Dashboard() {
+  const dispatch: DispatchType = useDispatch();
+  useEffect(() => {
+    dispatch(fetchDriversThunk());
+    dispatch(fetchTeamsThunk());
+    dispatch(fetchRaceThunk());
+    dispatch(fetchCircuitsThunk());
+    dispatch(fetchStandingsThunk());
+  }, [dispatch]);
+
   const drivers: DriverSliceInitialState = useSelector(
     (state: StoreType) => state.drivers,
   );
@@ -29,7 +44,7 @@ function Dashboard() {
   );
 
   // console.log(drivers, teams, races, circuits, standing);
-  console.log(standing);
+  // console.log(standing);
 
   const totalDrivers = drivers?.data?.length || 0;
   const totalTeams = teams?.data?.length || 0;
