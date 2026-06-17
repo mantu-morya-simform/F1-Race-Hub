@@ -2,9 +2,10 @@ import { createSlice } from "@reduxjs/toolkit";
 import fetchStandingsThunk from "./standingThunk";
 import type { StandingsSliceInitialState } from "./standingTypes";
 
-const initialState: StandingsSliceInitialState = {
+export const initialState: StandingsSliceInitialState = {
   isLoading: false,
   data: null,
+  year: 2026,
   isError: "",
 };
 

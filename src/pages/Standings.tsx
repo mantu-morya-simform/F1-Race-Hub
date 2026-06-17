@@ -1,7 +1,10 @@
 import Driver from "@/components/Driver";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type { StandingsSliceInitialState } from "@/Redux/features/standings/standingTypes";
+import type {
+  StandingsDataType,
+  StandingsSliceInitialState,
+} from "@/Redux/features/standings/standingTypes";
 import type { StoreType, DispatchType } from "@/Redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -23,6 +26,8 @@ const Standings = () => {
 
   // get year from params
   const selectedYear = Number(searchParams.get("year") || currentYear);
+  const search = searchParams.get("search") || "";
+  const team = searchParams.get("team") || "";
 
   useEffect(() => {
     dispatch(fetchStandingsThunk(selectedYear));
@@ -31,8 +36,34 @@ const Standings = () => {
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const year = e.target.value;
     // update URL params
-    setSearchParams({ year });
+    setSearchParams({ year, search, team });
   };
+
+  const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchName = e.target.value;
+    // update URL params
+    setSearchParams({ year: String(selectedYear), search: searchName, team });
+  };
+
+  const handleTeamSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchTeam = e.target.value;
+    // update URL params
+    setSearchParams({ year: String(selectedYear), search, team: searchTeam });
+  };
+
+  function filterStandings(data: StandingsDataType[]) {
+    return data.filter((driver) => {
+      const matchName =
+        search === "" ||
+        driver.driver.name.toLowerCase().includes(search.toLowerCase());
+
+      const matchTeam =
+        team === "" ||
+        driver.team.teamName.toLowerCase().includes(team.toLowerCase());
+
+      return matchName && matchTeam;
+    });
+  }
 
   return (
     <div className="bg-gray-900 p-6 rounded-xl shadow-lg mt-10">
@@ -52,6 +83,26 @@ const Standings = () => {
             </option>
           ))}
         </select>
+
+        <div className="flex items-center mt-2">
+          <input
+            type="text"
+            placeholder="Search By Driver Name"
+            value={search}
+            onChange={handleNameSearch}
+            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 placeholder:text-gray-400 w-64"
+          />
+        </div>
+
+        <div className="flex items-center mt-2">
+          <input
+            type="text"
+            placeholder="Search By Team Name"
+            value={team}
+            onChange={handleTeamSearch}
+            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 placeholder:text-gray-400 w-64"
+          />
+        </div>
       </div>
 
       {standing.isLoading && (
@@ -62,19 +113,21 @@ const Standings = () => {
             className="bg-gray-700 p-5 flex items-center gap-2"
           >
             <Spinner data-icon="inline-start" />
-            <span>Loading {selectedYear} Standing Data...</span>
+            <span>Loading {selectedYear} Standing Data</span>
           </Button>
         </div>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {standing.data?.map((driver) => (
-          <Driver
-            key={driver.classificationId}
-            driver={driver}
-            year={selectedYear}
-          />
-        ))}
+        {!standing.isLoading && standing.data
+          ? filterStandings(standing.data).map((driver) => (
+              <Driver
+                key={driver.classificationId}
+                driver={driver}
+                year={selectedYear}
+              />
+            ))
+          : null}
       </div>
     </div>
   );
