@@ -1,41 +1,25 @@
 import Circuit from "@/components/Circuit";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import fetchCircuitsThunk from "@/Redux/features/circuits/circuitThunk";
-import type {
-  CircuitDataType,
-  CircuitSliceInitialState,
-} from "@/Redux/features/circuits/circuitTypes";
-import type { DispatchType, StoreType } from "@/Redux/store";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { CircuitDataType } from "@/Redux/features/circuits/circuitTypes";
+import { useGetCircuitsQuery } from "@/Redux/api/apiSlice";
 import { useSearchParams } from "react-router-dom";
 
 const Circuits = () => {
-  const circuits: CircuitSliceInitialState = useSelector(
-    (state: StoreType) => state.circuits,
-  );
+  const { data, isLoading } = useGetCircuitsQuery();
+  const circuits = data ?? null;
 
-  const dispatch: DispatchType = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const country = searchParams.get("country") || "";
 
-  useEffect(() => {
-    if (!circuits.data || circuits.data.length === 0) {
-      dispatch(fetchCircuitsThunk());
-    }
-  }, [dispatch, circuits.data]);
-
   const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
-    // update URL params
     setSearchParams({ search: searchName, country });
   };
 
   const handleCountrySearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchCountry = e.target.value;
-    // update URL params
     setSearchParams({ search, country: searchCountry });
   };
 
@@ -79,7 +63,7 @@ const Circuits = () => {
         </div>
       </div>
 
-      {circuits.isLoading && !circuits.data && (
+      {isLoading && !circuits && (
         <div className="mb-4 flex justify-center">
           <Button
             disabled
@@ -92,8 +76,8 @@ const Circuits = () => {
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {circuits.data
-          ? filterCircuits(circuits.data).map((circuit: CircuitDataType) => (
+        {circuits
+          ? filterCircuits(circuits).map((circuit: CircuitDataType) => (
               <Circuit key={circuit.circuitId} circuit={circuit} />
             ))
           : null}

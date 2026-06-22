@@ -3,54 +3,59 @@ import TopDrivers from "@/components/TopDrivers";
 import TopTeams from "@/components/TopTeams";
 import UpcomingRace from "@/components/UpcomingRace";
 import CircuitsInfo from "@/components/CircuitsInfo";
-import type { DriverSliceInitialState } from "@/Redux/features/drivers/driverTypes";
-import type { TeamSliceInitialState } from "@/Redux/features/teams/teamsTypes";
-import type { RaceSliceInitialState } from "@/Redux/features/races/raceTypes";
-import type { CircuitSliceInitialState } from "@/Redux/features/circuits/circuitTypes";
-import type { StandingsSliceInitialState } from "@/Redux/features/standings/standingTypes";
-import type { DispatchType, StoreType } from "@/Redux/store";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import fetchDriversThunk from "@/Redux/features/drivers/driverThunk";
-import fetchTeamsThunk from "@/Redux/features/teams/teamsThunk";
-import fetchRaceThunk from "@/Redux/features/races/raceThunk";
-import fetchCircuitsThunk from "@/Redux/features/circuits/circuitThunk";
-import fetchStandingsThunk from "@/Redux/features/standings/standingThunk";
+import {
+  useGetDriversQuery,
+  useGetTeamsQuery,
+  useGetCurrentRacesQuery,
+  useGetCircuitsQuery,
+  useGetStandingsQuery,
+} from "@/Redux/api/apiSlice";
 
 function Dashboard() {
-  const dispatch: DispatchType = useDispatch();
+  const currentYear = new Date().getFullYear();
 
-  useEffect(() => {
-    dispatch(fetchDriversThunk());
-    dispatch(fetchTeamsThunk());
-    dispatch(fetchRaceThunk());
-    dispatch(fetchCircuitsThunk());
-    dispatch(fetchStandingsThunk(null));
-  }, [dispatch]);
+  const { data: drivers, isLoading: driversLoading } = useGetDriversQuery();
+  const { data: teams, isLoading: teamsLoading } = useGetTeamsQuery();
+  const { data: races, isLoading: racesLoading } = useGetCurrentRacesQuery();
+  const { data: circuits, isLoading: circuitsLoading } = useGetCircuitsQuery();
+  const { data: standings, isLoading: standingsLoading } =
+    useGetStandingsQuery(currentYear);
 
-  const drivers: DriverSliceInitialState = useSelector(
-    (state: StoreType) => state.drivers,
-  );
-  const teams: TeamSliceInitialState = useSelector(
-    (state: StoreType) => state.teams,
-  );
-  const races: RaceSliceInitialState = useSelector(
-    (state: StoreType) => state.races,
-  );
-  const circuits: CircuitSliceInitialState = useSelector(
-    (state: StoreType) => state.circuits,
-  );
-  const standing: StandingsSliceInitialState = useSelector(
-    (state: StoreType) => state.standings,
-  );
+  const totalDrivers = drivers?.length || 0;
+  const totalTeams = teams?.length || 0;
+  const totalRaces = races?.length || 0;
+  const totalCircuits = circuits?.length || 0;
 
-  // console.log(drivers, teams, races, circuits, standing);
-  // console.log(standing);
+  const driversState = {
+    isLoading: driversLoading,
+    isError: "",
+    data: drivers ?? null,
+  };
 
-  const totalDrivers = drivers?.data?.length || 0;
-  const totalTeams = teams?.data?.length || 0;
-  const totalRaces = races?.data?.length || 0;
-  const totalCircuits = circuits?.data?.length || 0;
+  const teamsState = {
+    isLoading: teamsLoading,
+    isError: "",
+    data: teams ?? null,
+  };
+
+  const racesState = {
+    isLoading: racesLoading,
+    isError: "",
+    data: races ?? null,
+  };
+
+  const circuitsState = {
+    isLoading: circuitsLoading,
+    isError: "",
+    data: circuits ?? null,
+  };
+
+  const standingState = {
+    isLoading: standingsLoading,
+    isError: "",
+    year: currentYear,
+    data: standings ?? null,
+  };
 
   return (
     <div className="p-6">
@@ -60,23 +65,27 @@ function Dashboard() {
 
       {/* All Data State */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        <Card title="Drivers" value={totalDrivers} extraState={drivers} />
-        <Card title="Teams" value={totalTeams} extraState={teams} />
-        <Card title="Races" value={totalRaces} extraState={races} />
-        <Card title="Circuits" value={totalCircuits} extraState={circuits} />
+        <Card title="Drivers" value={totalDrivers} extraState={driversState} />
+        <Card title="Teams" value={totalTeams} extraState={teamsState} />
+        <Card title="Races" value={totalRaces} extraState={racesState} />
+        <Card
+          title="Circuits"
+          value={totalCircuits}
+          extraState={circuitsState}
+        />
       </div>
 
       {/* top 5 drivers */}
-      <TopDrivers standingData={standing} />
+      <TopDrivers standingData={standingState} />
 
       {/* top 5 teams */}
-      <TopTeams teams={teams} />
+      <TopTeams teams={teamsState} />
 
       {/* Upcoming Race */}
-      <UpcomingRace races={races} />
+      <UpcomingRace races={racesState} />
 
       {/* curtis info */}
-      <CircuitsInfo circuits={circuits} />
+      <CircuitsInfo circuits={circuitsState} />
     </div>
   );
 }

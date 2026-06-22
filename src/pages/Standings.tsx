@@ -1,53 +1,35 @@
 import Driver from "@/components/Driver";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type {
-  StandingsDataType,
-  StandingsSliceInitialState,
-} from "@/Redux/features/standings/standingTypes";
-import type { StoreType, DispatchType } from "@/Redux/store";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import fetchStandingsThunk from "@/Redux/features/standings/standingThunk";
+import type { StandingsDataType } from "@/Redux/features/standings/standingTypes";
+import { useGetStandingsQuery } from "@/Redux/api/apiSlice";
 import { useSearchParams } from "react-router-dom";
 
 const Standings = () => {
-  const standing: StandingsSliceInitialState = useSelector(
-    (state: StoreType) => state.standings,
-  );
-
-  const dispatch: DispatchType = useDispatch();
-
-  const currentYear = new Date().getFullYear();
-
-  const years = Array.from({ length: 5 }, (_, index) => currentYear - index);
-
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // get year from params
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, index) => currentYear - index);
+
   const selectedYear = Number(searchParams.get("year") || currentYear);
   const search = searchParams.get("search") || "";
   const team = searchParams.get("team") || "";
 
-  useEffect(() => {
-    dispatch(fetchStandingsThunk(selectedYear));
-  }, [dispatch, selectedYear]);
+  const { data, isLoading } = useGetStandingsQuery(selectedYear);
+  const standingData = data ?? null;
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const year = e.target.value;
-    // update URL params
     setSearchParams({ year, search, team });
   };
 
   const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
-    // update URL params
     setSearchParams({ year: String(selectedYear), search: searchName, team });
   };
 
   const handleTeamSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchTeam = e.target.value;
-    // update URL params
     setSearchParams({ year: String(selectedYear), search, team: searchTeam });
   };
 
@@ -105,7 +87,7 @@ const Standings = () => {
         </div>
       </div>
 
-      {standing.isLoading && (
+      {isLoading && (
         <div className="mb-4 flex justify-center">
           <Button
             disabled
@@ -119,8 +101,8 @@ const Standings = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {!standing.isLoading && standing.data
-          ? filterStandings(standing.data).map((driver) => (
+        {!isLoading && standingData
+          ? filterStandings(standingData).map((driver) => (
               <Driver
                 key={driver.classificationId}
                 driver={driver}
