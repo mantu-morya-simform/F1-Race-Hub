@@ -1,7 +1,7 @@
 import Driver from "@/components/Driver";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type { StandingsDataType } from "@/Redux/features/standings/standingTypes";
+import type { StandingsDataType } from "@/Redux/features/standingTypes";
 import { useGetStandingsQuery } from "@/Redux/api/apiSlice";
 import { useSearchParams } from "react-router-dom";
 

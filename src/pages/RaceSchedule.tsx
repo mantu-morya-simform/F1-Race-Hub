@@ -1,7 +1,7 @@
 import Race from "@/components/Race";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type { RaceDataType } from "@/Redux/features/races/raceTypes";
+import type { RaceDataType } from "@/Redux/features/raceTypes";
 import { useGetCurrentRacesQuery } from "@/Redux/api/apiSlice";
 import { useSearchParams } from "react-router-dom";
 

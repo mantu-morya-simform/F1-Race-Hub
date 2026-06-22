@@ -3,7 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type {
   StandingsDataType,
   StandingsSliceInitialState,
-} from "@/Redux/features/standings/standingTypes";
+} from "@/Redux/features/standingTypes";
 import Driver from "./Driver";
 
 const TopDrivers = ({

@@ -1,7 +1,7 @@
 import Circuit from "@/components/Circuit";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type { CircuitDataType } from "@/Redux/features/circuits/circuitTypes";
+import type { CircuitDataType } from "@/Redux/features/circuitTypes";
 import { useGetCircuitsQuery } from "@/Redux/api/apiSlice";
 import { useSearchParams } from "react-router-dom";
 

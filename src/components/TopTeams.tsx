@@ -3,7 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type {
   TeamDataType,
   TeamSliceInitialState,
-} from "@/Redux/features/teams/teamsTypes";
+} from "@/Redux/features/teamsTypes";
 import Team from "./Team";
 
 const TopTeams = ({ teams }: { teams: TeamSliceInitialState }) => {

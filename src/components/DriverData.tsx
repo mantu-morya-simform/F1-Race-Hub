@@ -1,4 +1,4 @@
-import type { DriverDataType } from "@/Redux/features/drivers/driverTypes";
+import type { DriverDataType } from "@/Redux/features/driverTypes";
 import { FaBirthdayCake, FaGlobe } from "react-icons/fa";
 
 const DriverData = ({ driver }: { driver: DriverDataType }) => {

@@ -1,4 +1,4 @@
-import type { TeamDataType } from "@/Redux/features/teams/teamsTypes";
+import type { TeamDataType } from "@/Redux/features/teamsTypes";
 import { FaGlobeEurope, FaUsers } from "react-icons/fa";
 
 const Team = ({ team }: { team: TeamDataType }) => {

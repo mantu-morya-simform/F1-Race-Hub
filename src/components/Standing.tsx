@@ -1,5 +1,5 @@
 import { useGetStandingsQuery } from "@/Redux/api/apiSlice";
-import type { StandingsDataType } from "@/Redux/features/standings/standingTypes";
+import type { StandingsDataType } from "@/Redux/features/standingTypes";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import {

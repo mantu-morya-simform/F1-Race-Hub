@@ -3,7 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type {
   RaceDataType,
   RaceSliceInitialState,
-} from "@/Redux/features/races/raceTypes";
+} from "@/Redux/features/raceTypes";
 import Race from "./Race";
 
 const UpcomingRace = ({ races }: { races: RaceSliceInitialState }) => {

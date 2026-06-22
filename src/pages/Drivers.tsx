@@ -1,7 +1,7 @@
 import DriverData from "@/components/DriverData";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type { DriverDataType } from "@/Redux/features/drivers/driverTypes";
+import type { DriverDataType } from "@/Redux/features/driverTypes";
 import { useGetDriversQuery } from "@/Redux/api/apiSlice";
 import { useSearchParams } from "react-router-dom";
 
