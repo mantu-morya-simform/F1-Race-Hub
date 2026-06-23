@@ -39,7 +39,7 @@ const UpcomingRace = ({ races }: { races: RaceSliceInitialState }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {upcomingRaces?.map((race: RaceDataType) => (
-          <Race race={race} />
+          <Race race={race} key={race.raceId} />
         ))}
       </div>
     </div>

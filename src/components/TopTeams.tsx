@@ -30,7 +30,7 @@ const TopTeams = ({ teams }: { teams: TeamSliceInitialState }) => {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {topTeams.map((team: TeamDataType) => (
-          <Team team={team} />
+          <Team team={team} key={team.teamId} />
         ))}
       </div>
     </div>

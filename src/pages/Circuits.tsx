@@ -9,6 +9,7 @@ import type {
 import type { DispatchType, StoreType } from "@/Redux/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 const Circuits = () => {
   const circuits: CircuitSliceInitialState = useSelector(
@@ -16,6 +17,9 @@ const Circuits = () => {
   );
 
   const dispatch: DispatchType = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const search = searchParams.get("search") || "";
+  const country = searchParams.get("country") || "";
 
   useEffect(() => {
     if (!circuits.data || circuits.data.length === 0) {
@@ -23,11 +27,57 @@ const Circuits = () => {
     }
   }, [dispatch, circuits.data]);
 
+  const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchName = e.target.value;
+    // update URL params
+    setSearchParams({ search: searchName, country });
+  };
+
+  const handleCountrySearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchCountry = e.target.value;
+    // update URL params
+    setSearchParams({ search, country: searchCountry });
+  };
+
+  function filterCircuits(data: CircuitDataType[]) {
+    return data.filter((circuit) => {
+      const matchName =
+        search === "" ||
+        circuit.circuitName.toLowerCase().includes(search.toLowerCase());
+
+      const matchCountry =
+        country === "" ||
+        circuit.country.toLowerCase().includes(country.toLowerCase());
+
+      return matchName && matchCountry;
+    });
+  }
+
   return (
     <div className="bg-gray-900 p-6 rounded-xl shadow-lg mt-10">
-      <h1 className="text-5xl font-bold text-red-500 text-center mb-10">
-        All Circuits
-      </h1>
+      <div className="flex justify-center gap-20 items-start">
+        <h1 className="text-5xl font-bold text-red-500 text-center mb-10">
+          All Circuits
+        </h1>
+        <div className="flex items-center mt-2">
+          <input
+            type="text"
+            placeholder="Search By Circuit Name"
+            value={search}
+            onChange={handleNameSearch}
+            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 placeholder:text-gray-400 w-64"
+          />
+        </div>
+        <div className="flex items-center mt-2">
+          <input
+            type="text"
+            placeholder="Search By Country Name"
+            value={country}
+            onChange={handleCountrySearch}
+            className="bg-gray-800 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 placeholder:text-gray-400 w-64"
+          />
+        </div>
+      </div>
 
       {circuits.isLoading && !circuits.data && (
         <div className="mb-4 flex justify-center">
@@ -42,9 +92,11 @@ const Circuits = () => {
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {circuits.data?.map((circuit: CircuitDataType) => (
-          <Circuit key={circuit.circuitId} circuit={circuit} />
-        ))}
+        {circuits.data
+          ? filterCircuits(circuits.data).map((circuit: CircuitDataType) => (
+              <Circuit key={circuit.circuitId} circuit={circuit} />
+            ))
+          : null}
       </div>
     </div>
   );

@@ -1,10 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { initialState } from "./standingSlice";
 
 const fetchStandingsThunk = createAsyncThunk(
   "fetchStandingsThunk",
-  async () => {
+  async (year: number | null) => {
+    if (!year) {
+      year = initialState.year;
+    }
     const response = await fetch(
-      "https://f1api.dev/api/2026/drivers-championship",
+      `https://f1api.dev/api/${year}/drivers-championship`,
     );
     if (!response.ok) {
       throw new Error("Failed to fetch drivers");

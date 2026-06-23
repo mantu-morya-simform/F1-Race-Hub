@@ -32,5 +32,6 @@ export interface StandingsDataType {
 export interface StandingsSliceInitialState {
   isError: string;
   isLoading: boolean;
+  year: number | null;
   data: StandingsDataType[] | null;
 }

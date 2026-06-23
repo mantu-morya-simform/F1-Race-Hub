@@ -19,12 +19,13 @@ import fetchStandingsThunk from "@/Redux/features/standings/standingThunk";
 
 function Dashboard() {
   const dispatch: DispatchType = useDispatch();
+
   useEffect(() => {
     dispatch(fetchDriversThunk());
     dispatch(fetchTeamsThunk());
     dispatch(fetchRaceThunk());
     dispatch(fetchCircuitsThunk());
-    dispatch(fetchStandingsThunk());
+    dispatch(fetchStandingsThunk(null));
   }, [dispatch]);
 
   const drivers: DriverSliceInitialState = useSelector(
