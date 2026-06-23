@@ -5,7 +5,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 z-50 w-full border-b bg-background shadow-sm">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
         {/* logo */}
-        <Link to="/" className="text-xl font-bold">
+        <Link to="/" className="block max-sm:hidden text-xl font-bold">
           F1 Race Hub
         </Link>
 
