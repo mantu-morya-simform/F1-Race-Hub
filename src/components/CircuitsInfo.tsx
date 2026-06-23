@@ -3,7 +3,7 @@ import { Spinner } from "@/components/ui/spinner";
 import type {
   CircuitDataType,
   CircuitSliceInitialState,
-} from "@/Redux/features/circuits/circuitTypes";
+} from "@/types/circuitTypes";
 import Circuit from "./Circuit";
 
 const CircuitsInfo = ({ circuits }: { circuits: CircuitSliceInitialState }) => {

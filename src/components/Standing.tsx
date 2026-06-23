@@ -1,11 +1,5 @@
-import fetchStandingsThunk from "@/Redux/features/standings/standingThunk";
-import type {
-  StandingsDataType,
-  StandingsSliceInitialState,
-} from "@/Redux/features/standings/standingTypes";
-import type { DispatchType, StoreType } from "@/Redux/store";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useStandings } from "@/hooks";
+import type { StandingsDataType } from "@/types/standingTypes";
 import { useParams, useSearchParams } from "react-router-dom";
 import {
   FaFlagCheckered,
@@ -25,24 +19,14 @@ const Standing = () => {
 
   const selectedYear = Number(searchParams.get("year") || currentYear);
 
-  const standings: StandingsSliceInitialState = useSelector(
-    (state: StoreType) => state.standings,
-  );
+  const { data: standingsData = [], isLoading } = useStandings(selectedYear);
 
-  const dispatch: DispatchType = useDispatch();
-
-  useEffect(() => {
-    if (!standings.data || standings.data.length === 0) {
-      dispatch(fetchStandingsThunk(selectedYear));
-    }
-  }, [dispatch, standings.data, selectedYear]);
-
-  const selectedStandings = (standings.data ?? []).find(
+  const selectedStandings = (standingsData ?? []).find(
     (standing: StandingsDataType) =>
       standing.classificationId === Number(standingsID),
   );
 
-  if (standings.isLoading) {
+  if (isLoading) {
     return <div className="text-white text-center mt-10">Loading...</div>;
   }
 

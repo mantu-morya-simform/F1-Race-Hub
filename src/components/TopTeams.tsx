@@ -1,9 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type {
-  TeamDataType,
-  TeamSliceInitialState,
-} from "@/Redux/features/teams/teamsTypes";
+import type { TeamDataType, TeamSliceInitialState } from "@/types/teamsTypes";
 import Team from "./Team";
 
 const TopTeams = ({ teams }: { teams: TeamSliceInitialState }) => {

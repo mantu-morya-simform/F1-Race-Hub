@@ -1,31 +1,15 @@
 import Circuit from "@/components/Circuit";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import fetchCircuitsThunk from "@/Redux/features/circuits/circuitThunk";
-import type {
-  CircuitDataType,
-  CircuitSliceInitialState,
-} from "@/Redux/features/circuits/circuitTypes";
-import type { DispatchType, StoreType } from "@/Redux/store";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { CircuitDataType } from "@/types/circuitTypes";
 import { useSearchParams } from "react-router-dom";
+import { useCircuits } from "@/hooks";
 
 const Circuits = () => {
-  const circuits: CircuitSliceInitialState = useSelector(
-    (state: StoreType) => state.circuits,
-  );
-
-  const dispatch: DispatchType = useDispatch();
+  const { data: circuitsData = [], isLoading } = useCircuits();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const country = searchParams.get("country") || "";
-
-  useEffect(() => {
-    if (!circuits.data || circuits.data.length === 0) {
-      dispatch(fetchCircuitsThunk());
-    }
-  }, [dispatch, circuits.data]);
 
   const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
@@ -79,7 +63,7 @@ const Circuits = () => {
         </div>
       </div>
 
-      {circuits.isLoading && !circuits.data && (
+      {isLoading && circuitsData.length === 0 && (
         <div className="mb-4 flex justify-center">
           <Button
             disabled
@@ -92,8 +76,8 @@ const Circuits = () => {
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {circuits.data
-          ? filterCircuits(circuits.data).map((circuit: CircuitDataType) => (
+        {circuitsData
+          ? filterCircuits(circuitsData).map((circuit: CircuitDataType) => (
               <Circuit key={circuit.circuitId} circuit={circuit} />
             ))
           : null}

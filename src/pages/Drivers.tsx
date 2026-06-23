@@ -1,31 +1,15 @@
 import DriverData from "@/components/DriverData";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import fetchDriversThunk from "@/Redux/features/drivers/driverThunk";
-import type {
-  DriverDataType,
-  DriverSliceInitialState,
-} from "@/Redux/features/drivers/driverTypes";
-import type { DispatchType, StoreType } from "@/Redux/store";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import type { DriverDataType } from "@/types/driverTypes";
 import { useSearchParams } from "react-router-dom";
+import { useDrivers } from "@/hooks";
 
 const Drivers = () => {
-  const drivers: DriverSliceInitialState = useSelector(
-    (state: StoreType) => state.drivers,
-  );
-
-  const dispatch: DispatchType = useDispatch();
+  const { data: driversData = [], isLoading } = useDrivers();
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search") || "";
   const country = searchParams.get("country") || "";
-
-  useEffect(() => {
-    if (!drivers.data || drivers.data.length === 0) {
-      dispatch(fetchDriversThunk());
-    }
-  }, [dispatch, drivers.data]);
 
   const handleNameSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const searchName = e.target.value;
@@ -52,6 +36,7 @@ const Drivers = () => {
       return matchName && matchCountry;
     });
   }
+
   return (
     <div className="bg-gray-900 p-6 rounded-xl shadow-lg mt-10">
       <div className="flex justify-center gap-20 items-start">
@@ -79,7 +64,7 @@ const Drivers = () => {
         </div>
       </div>
 
-      {drivers.isLoading && !drivers.data && (
+      {isLoading && driversData.length === 0 && (
         <div className="mb-4 flex justify-center">
           <Button
             disabled
@@ -87,13 +72,13 @@ const Drivers = () => {
             className="bg-gray-700 p-5 flex items-center gap-2"
           >
             <Spinner data-icon="inline-start" />
-            <span>Loading Standing Data...</span>
+            <span>Loading Drivers Data...</span>
           </Button>
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {drivers.data
-          ? filterDrivers(drivers.data).map((driver: DriverDataType) => (
+        {driversData
+          ? filterDrivers(driversData).map((driver: DriverDataType) => (
               <DriverData key={driver.driverId} driver={driver} />
             ))
           : null}

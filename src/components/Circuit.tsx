@@ -1,4 +1,4 @@
-import type { CircuitDataType } from "@/Redux/features/circuits/circuitTypes";
+import type { CircuitDataType } from "@/types/circuitTypes";
 import React from "react";
 import { FaClock, FaMapMarkerAlt, FaRoad, FaTrophy } from "react-icons/fa";
 import { MdOutlineTrackChanges } from "react-icons/md";

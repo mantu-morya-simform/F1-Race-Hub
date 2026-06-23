@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type { DriverSliceInitialState } from "@/Redux/features/drivers/driverTypes";
-import type { TeamSliceInitialState } from "@/Redux/features/teams/teamsTypes";
-import type { RaceSliceInitialState } from "@/Redux/features/races/raceTypes";
-import type { CircuitSliceInitialState } from "@/Redux/features/circuits/circuitTypes";
-import type { StandingsSliceInitialState } from "@/Redux/features/standings/standingTypes";
+import type { DriverSliceInitialState } from "@/types/driverTypes";
+import type { TeamSliceInitialState } from "@/types/teamsTypes";
+import type { RaceSliceInitialState } from "@/types/raceTypes";
+import type { CircuitSliceInitialState } from "@/types/circuitTypes";
+import type { StandingsSliceInitialState } from "@/types/standingTypes";
 
 type CardProps = {
   title: string;

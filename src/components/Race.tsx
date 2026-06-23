@@ -1,4 +1,4 @@
-import type { RaceDataType } from "@/Redux/features/races/raceTypes";
+import type { RaceDataType } from "@/types/raceTypes";
 import { FaClock, FaFlagCheckered, FaMapMarkerAlt } from "react-icons/fa";
 import { MdOutlineTrackChanges } from "react-icons/md";
 

@@ -1,25 +1,12 @@
 import Driver from "@/components/Driver";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import type {
-  StandingsDataType,
-  StandingsSliceInitialState,
-} from "@/Redux/features/standings/standingTypes";
-import type { StoreType, DispatchType } from "@/Redux/store";
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import fetchStandingsThunk from "@/Redux/features/standings/standingThunk";
+import type { StandingsDataType } from "@/types/standingTypes";
 import { useSearchParams } from "react-router-dom";
+import { useStandings } from "@/hooks";
 
 const Standings = () => {
-  const standing: StandingsSliceInitialState = useSelector(
-    (state: StoreType) => state.standings,
-  );
-
-  const dispatch: DispatchType = useDispatch();
-
   const currentYear = new Date().getFullYear();
-
   const years = Array.from({ length: 5 }, (_, index) => currentYear - index);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -29,9 +16,7 @@ const Standings = () => {
   const search = searchParams.get("search") || "";
   const team = searchParams.get("team") || "";
 
-  useEffect(() => {
-    dispatch(fetchStandingsThunk(selectedYear));
-  }, [dispatch, selectedYear]);
+  const { data: standingsData = [], isLoading } = useStandings(selectedYear);
 
   const handleYearChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const year = e.target.value;
@@ -105,7 +90,7 @@ const Standings = () => {
         </div>
       </div>
 
-      {standing.isLoading && (
+      {isLoading && (
         <div className="mb-4 flex justify-center">
           <Button
             disabled
@@ -119,8 +104,8 @@ const Standings = () => {
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {!standing.isLoading && standing.data
-          ? filterStandings(standing.data).map((driver) => (
+        {!isLoading && standingsData
+          ? filterStandings(standingsData).map((driver) => (
               <Driver
                 key={driver.classificationId}
                 driver={driver}

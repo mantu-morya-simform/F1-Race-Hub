@@ -1,4 +1,4 @@
-import type { StandingsDataType } from "@/Redux/features/standings/standingTypes";
+import type { StandingsDataType } from "@/types/standingTypes";
 import { FaFlagCheckered, FaMedal, FaTrophy, FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 

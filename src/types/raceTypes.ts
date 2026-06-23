@@ -52,10 +52,10 @@ export interface Winner {
   driverId: string;
   name: string;
   surname: string;
-  country: string;
+  nationality: string;
   birthday: string;
-  number: number;
-  shortName: string;
+  number: number | null;
+  shortName: string | null;
   url: string;
 }
 
@@ -63,7 +63,7 @@ export interface TeamWinner {
   teamId: string;
   teamName: string;
   country: string;
-  firstAppearance: number;
+  firstAppareance: number;
   constructorsChampionships: number;
   driversChampionships: number;
   url: string;
