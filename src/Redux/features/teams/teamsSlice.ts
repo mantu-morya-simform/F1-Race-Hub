@@ -1,32 +1,32 @@
 import { createSlice } from "@reduxjs/toolkit";
 import fetchTeamsThunk from "./teamsThunk";
+import type { TeamSliceInitialState } from "./teamsTypes";
+
+const initialState: TeamSliceInitialState = {
+  isLoading: false,
+  data: null,
+  isError: "",
+};
 
 const teamsSlice = createSlice({
   name: "teamReducer",
-  initialState: {
-    isError: false,
-    isLoading: false,
-    data: null,
-    err: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchTeamsThunk.pending, (state) => {
       state.isLoading = true;
-      state.isError = false;
-      state.err = null;
+      state.isError = "";
     });
 
     builder.addCase(fetchTeamsThunk.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.isError = false;
-      state.data = action.payload;
+      state.isError = "";
+      state.data = action.payload.teams;
     });
 
     builder.addCase(fetchTeamsThunk.rejected, (state, action) => {
       state.isLoading = false;
-      state.isError = true;
-      state.err = action.error.message || "Something went wrong";
+      state.isError = action.error.message || "Something went wrong";
     });
   },
 });
